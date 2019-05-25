@@ -11,10 +11,8 @@ class Shop {
 
         this.game = g 
 
-        console.log( this.game.score ) 
+        //console.log( this.game.score ) 
 
-        
-     
         this.titel = document.createElement("shopTitel")
 
         document.body.appendChild(this.titel);
@@ -32,25 +30,28 @@ class Shop {
         this.nextGame.addEventListener("click", () => this.naarStart());
 
     }
-
     
     public naarStart(){
         console.log("start button werkt")
-        this.game.startScreen()  
+        this.game.playscreen()  
     }
 
     public kooptHealth(){
         this.game.score = this.game.score - 1 
+        this.updateScore(this.game.score)
         console.log("nieuwe score:" + this.game.score)
     }
 
     public kooptPowerUp(){
         this.game.score = this.game.score - 1 
+        this.updateScore(this.game.score)
         console.log("nieuwe score:" + this.game.score)
     }
 
-    public update(){
-
+    public updateScore(nieuweScore: number){
+        //veranderd de score
+        let scoreElement = document.getElementsByTagName("scoreElement")[0];
+        scoreElement.innerHTML = "SCORE: " + nieuweScore;
     }
 
 }

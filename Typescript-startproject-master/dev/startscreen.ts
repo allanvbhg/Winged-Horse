@@ -2,6 +2,7 @@ class StartScreen {
 
     private game : Game
     private nextGame: HTMLElement 
+    private logo: HTMLElement
    
 
    
@@ -9,15 +10,19 @@ class StartScreen {
 
         this.game = g
 
+        
+        this.logo = document.createElement("logo")        
+        document.body.appendChild(this.logo);
+
         this.nextGame = document.createElement("nextGame")
         document.body.appendChild(this.nextGame)
-        this.nextGame.addEventListener("click", () => this.naarDeShop());
+        this.nextGame.addEventListener("click", () => this.naarDeGame());
 
     }
 
-    public naarDeShop(){
-        console.log("shop button werkt")
-        this.game.shopscreen()  
+
+    public naarDeGame(){
+        this.game.playscreen()  
     }
 
    
