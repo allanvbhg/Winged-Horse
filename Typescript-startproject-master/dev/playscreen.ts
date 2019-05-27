@@ -5,8 +5,6 @@ class playscreen {
     private game : Game
     private nextGame: HTMLElement 
    
-
-   
     constructor( g: Game ) {
 
         this.game = g
@@ -17,16 +15,11 @@ class playscreen {
 
     }
 
-
-   
     public naarDeShop(){
         this.game.shopscreen()  
     }
 
-   
-
     public update(){
-
     }
 
 }

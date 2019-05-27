@@ -1,30 +1,32 @@
 class Shop {
 
-    private titel: HTMLElement
+    private achtergrond: HTMLElement 
     private health: HTMLElement
     private powerUp: HTMLElement 
     private nextGame: HTMLElement 
-    //private score: HTMLElement
     private game : Game
    
     constructor( g: Game ) {
 
         this.game = g 
 
-        //console.log( this.game.score ) 
+        //ACHTERGROND
+        this.achtergrond = document.createElement("achtergrondShop")
+        document.body.appendChild(this.achtergrond)
 
-        this.titel = document.createElement("shopTitel")
-
-        document.body.appendChild(this.titel);
-
-        this.health = document.createElement("health")        
+        //HEALTH
+        this.health = document.createElement("health")   
+        this.health.innerHTML = "HEALTH"     
         document.body.appendChild(this.health);
         this.health.addEventListener("click", () => this.kooptHealth());
 
+        //POWER
         this.powerUp = document.createElement("powerUp")
+        this.powerUp.innerHTML = "POWER UP"     
         document.body.appendChild(this.powerUp);
         this.powerUp.addEventListener("click", () => this.kooptPowerUp());
 
+        //NEXTGAME
         this.nextGame = document.createElement("nextGame")
         document.body.appendChild(this.nextGame)
         this.nextGame.addEventListener("click", () => this.naarStart());
@@ -37,15 +39,30 @@ class Shop {
     }
 
     public kooptHealth(){
-        this.game.score = this.game.score - 1 
-        this.updateScore(this.game.score)
-        console.log("nieuwe score:" + this.game.score)
+
+        if (this.game.health == 0 ) { 
+            this.game.health = this.game.health + 1  
+            this.game.score = this.game.score - 1 
+            this.updateScore(this.game.score)
+            let healthElement = document.getElementsByTagName("healthElement")[0];
+            healthElement.innerHTML = "+ Health"
+        } 
+        else {
+            console.log("kan je niet meer kopen, je hebt er al een")
+        }
     }
 
     public kooptPowerUp(){
-        this.game.score = this.game.score - 1 
-        this.updateScore(this.game.score)
-        console.log("nieuwe score:" + this.game.score)
+        if (this.game.power == 0 ) { 
+            this.game.power = this.game.power + 1  
+            this.game.score = this.game.score - 1 
+            this.updateScore(this.game.score)
+            let powerElement = document.getElementsByTagName("powerElement")[0];
+            powerElement.innerHTML = "+ Power"
+        } 
+        else {
+            console.log("kan je niet meer kopen, je hebt er al een")
+        }
     }
 
     public updateScore(nieuweScore: number){
