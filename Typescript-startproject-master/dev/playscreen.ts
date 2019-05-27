@@ -12,7 +12,6 @@ class playscreen {
         this.nextGame = document.createElement("nextGame")
         document.body.appendChild(this.nextGame)
         this.nextGame.addEventListener("click", () => this.naarDeShop());
-
     }
 
     public naarDeShop(){

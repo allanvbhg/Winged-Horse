@@ -1,18 +1,15 @@
-
-
 body, html {
     margin:0; padding:0;
     width:100%; height:100%;
     font-family: 'Press Start 2P', cursive;  
-    overflow:hidden;
-  
+    overflow:hidden; 
+    color: white; 
 }
 
 * {
     box-sizing: border-box;
+    
 }
-
-
 
 health {
     width: 100%; 
@@ -21,7 +18,6 @@ health {
     position: absolute;
     margin-top: 300px;
     font-size: 60px;
-    color: white; 
 }
 
 
@@ -30,20 +26,17 @@ powerUp {
     height: 100%; 
     text-align: center;
     position: absolute;
-    font-size: 60px;
-    color: white; 
-
+    font-size: 60px; 
     margin-top: 465px; 
 }
-
 
 nextGame {
     width: 100%; 
     height: 100%; 
-    background-image: url(../img/nextgame2.png);
+    background-image: url(../img/nextgame.png);
     position: absolute;
     background-repeat: no-repeat;
-    margin-left: 100px;
+    margin-left: 1000px;
     margin-top: 500px; 
 }
 
@@ -65,20 +58,16 @@ scoreElement {
     display: block;
     margin: 20px; 
     font-size: 30px;
-    width: 500px;  
- 
-     
+    width: 500px;      
 }
 
-healthElement {
-    
+healthElement {    
     position: absolute;
     display: block;
     margin-top: 70px; 
     margin-left: 20px; 
     font-size: 30px;
-    width: 500px;  
-     
+    width: 500px;      
 }
 
 powerElement {
@@ -96,5 +85,4 @@ logo{
     background-image: url(../img/logo.png);
     position: absolute;
     background-repeat: no-repeat;
-
 }

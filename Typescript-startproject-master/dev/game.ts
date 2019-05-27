@@ -13,7 +13,7 @@ class Game {
     
     constructor() {
 
-        //startwaardes 
+        //startWaardes 
         this.score = 5 
         this.health = 0 
         this.power = 0 
@@ -23,7 +23,7 @@ class Game {
     }
     
     public gameLoop():void{
-        //this.currentscreen.update()
+        this.currentscreen.update()
         requestAnimationFrame(() => this.gameLoop())
     }
 

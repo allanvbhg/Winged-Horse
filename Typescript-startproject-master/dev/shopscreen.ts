@@ -30,7 +30,6 @@ class Shop {
         this.nextGame = document.createElement("nextGame")
         document.body.appendChild(this.nextGame)
         this.nextGame.addEventListener("click", () => this.naarStart());
-
     }
     
     public naarStart(){

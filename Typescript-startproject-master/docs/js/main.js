@@ -29,6 +29,7 @@ var Game = (function () {
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
+        this.currentscreen.update();
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     Game.prototype.startScreen = function () {
