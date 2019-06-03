@@ -80,6 +80,28 @@ var Game = (function () {
     return Game;
 }());
 window.addEventListener("load", function () { return new Game(); });
+var Tekst = (function () {
+    function Tekst(x, y, scale, type, g) {
+        var _this = this;
+        this.game = g;
+        if (type == "naam") {
+            this.tekst = document.createElement("naam");
+            document.body.appendChild(this.tekst);
+            this.tekst.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+        }
+        if (type == "start") {
+            this.tekst = document.createElement("start");
+            document.body.appendChild(this.tekst);
+            this.tekst.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            this.tekst.addEventListener("click", function () { return _this.start(); });
+        }
+    }
+    Tekst.prototype.start = function () {
+        this.game.playscreen();
+        console.log("next scene");
+    };
+    return Tekst;
+}());
 var playscreen = (function () {
     function playscreen(g) {
         var _this = this;
@@ -147,21 +169,33 @@ var Shop = (function () {
     };
     return Shop;
 }());
+var Sign = (function () {
+    function Sign(x, y, scale, type) {
+        if (type == 0) {
+            this.sign = document.createElement("sign");
+            document.body.appendChild(this.sign);
+            this.sign.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            console.log("signcreated");
+        }
+        else {
+            this.bord = document.createElement("bord");
+            document.body.appendChild(this.bord);
+            this.bord.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            console.log("bordcreated");
+        }
+    }
+    return Sign;
+}());
 var StartScreen = (function () {
     function StartScreen(g) {
-        var _this = this;
         this.game = g;
-        this.logo = document.createElement("logo");
-        document.body.appendChild(this.logo);
-        this.nextGame = document.createElement("nextGame");
-        document.body.appendChild(this.nextGame);
-        this.nextGame.addEventListener("click", function () { return _this.naarDeGame(); });
+        var background = document.createElement("startbackground");
+        document.body.appendChild(background);
+        var sign = new Sign(260, 150, 1, 0);
+        var name = new Tekst(430, 250, 1, "naam", g);
+        var sign2 = new Sign(365, 600, 0.5, 1);
+        var start = new Tekst(625, 670, 1, "start", g);
     }
-    StartScreen.prototype.naarDeGame = function () {
-        this.game.playscreen();
-    };
-    StartScreen.prototype.update = function () {
-    };
     return StartScreen;
 }());
 //# sourceMappingURL=main.js.map
