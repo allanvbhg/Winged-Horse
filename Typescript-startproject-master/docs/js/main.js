@@ -173,7 +173,7 @@ var Player = (function () {
             this.playscreen.run();
         }
         else if (event.keyCode == 38) {
-            if (this.action == "attack" && this.die == false) {
+            if (this.action == "attack" && this.die == false && this.check == true) {
                 this.check = false;
                 var one = this.buttons[0];
                 var two = this.buttons[1];
@@ -188,7 +188,7 @@ var Player = (function () {
                 this.AND = 0;
             }
             else {
-                if (this.die == false) {
+                if (this.action != "test" && this.die == false) {
                     this.playscreen.die();
                     this.nummerdelete();
                     this.action = "test";
@@ -218,9 +218,10 @@ var Player = (function () {
             }
         }
         else if (event.keyCode == 40) {
-            if (this.action == "tame" && this.die == false) {
-                this.check = false;
+            if (this.action == "tame" && this.die == false && this.check == true) {
                 this.playscreen.dragon.onTame(this.playscreen, this.game);
+                this.canrun = false;
+                this.action = "test";
                 this.playscreen.naarDeShop();
                 y += 10;
                 this.player.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
@@ -317,6 +318,7 @@ var Player = (function () {
 }());
 var playscreen = (function () {
     function playscreen(g) {
+        this.naardeshop = false;
         this.game = g;
         var background = document.createElement("backdrak");
         document.body.appendChild(background);
@@ -324,10 +326,12 @@ var playscreen = (function () {
         this.player = new Player(150, 400, 2, this, this.game);
     }
     playscreen.prototype.run = function () {
-        if (this.player.canrun == true) {
+        console.log(this.game.currentscreen);
+        if (this.player.canrun == true && this.naardeshop == false) {
             console.log("run");
             if (this.game.score >= 50) {
                 this.game.score -= 50;
+                this.naardeshop = true;
                 this.naarDeShop();
             }
         }
@@ -338,10 +342,14 @@ var playscreen = (function () {
             console.log("ik ben dood");
             this.dragon.delete();
             this.player.delete();
+            this.player.nummerdelete();
             var eyes = new Eyes(450, 150, 1);
         }
     };
     playscreen.prototype.naarDeShop = function () {
+        this.dragon.delete();
+        this.player.delete();
+        this.player.nummerdelete();
         this.game.shopscreen();
     };
     playscreen.prototype.update = function () {

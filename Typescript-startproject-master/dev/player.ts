@@ -32,7 +32,7 @@ class Player {
     }
     // PRESS UP ARROW attack
     else if (event.keyCode == 38) {
-        if (this.action == "attack" && this.die == false) {
+        if (this.action == "attack" && this.die == false && this.check == true) {
           this.check = false
           let one = this.buttons[0]
           let two = this.buttons[1]
@@ -48,7 +48,7 @@ class Player {
           this.AND = 0
         }else{
           // draak vermoord je wilde getemd worden kan mooier maar voor nu nr de die scene
-          if (this.die == false) {
+          if (this.action != "test" && this.die == false) {
             this.playscreen.die()
             this.nummerdelete()
             this.action = "test"
@@ -87,9 +87,11 @@ class Player {
     }
     // PRESS DOWN ARROW tame
     else if (event.keyCode == 40) {
-      if (this.action == "tame" && this.die == false) {
-        this.check = false
+      if (this.action == "tame" && this.die == false && this.check == true) {
           this.playscreen.dragon.onTame(this.playscreen, this.game)
+          this.canrun = false
+          this.action = "test"
+          
           this.playscreen.naarDeShop()
           //WORD EEN ANIMATIE OF ANDER PLAATJE NU NOG NIET
           y += 10
@@ -98,6 +100,7 @@ class Player {
         // draak vermoord je wilde getemd worden kan mooier maar voor nu nr de die scene
         if (this.die == false) {
           this.playscreen.die()
+
           this.nummerdelete()
           this.action = "test"
         }
@@ -134,7 +137,6 @@ class Player {
     //A
     else if (event.keyCode == 65) {
       if (this.buttons[0] == 4 || this.buttons[1] == 4 || this.buttons[2] == 4 ) {
-        
         this.FAND()
       } else{
         this.playscreen.die()
@@ -145,7 +147,6 @@ class Player {
     //S
     else if (event.keyCode == 83) {
       if (this.buttons[0] == 5 || this.buttons[1] == 5 || this.buttons[2] == 5 ) {
-        
         this.FAND()
       } else{
         this.playscreen.die()
@@ -156,7 +157,6 @@ class Player {
     //D
     else if (event.keyCode == 68) {
       if (this.buttons[0] == 6 || this.buttons[1] == 6 || this.buttons[2] == 6 ) {
-        
         this.FAND()
       } else{
         this.playscreen.die()

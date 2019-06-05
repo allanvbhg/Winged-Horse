@@ -6,6 +6,7 @@ class playscreen {
     private nextGame: HTMLElement 
     player : Player
     dragon : Dragon
+    naardeshop : boolean = false
    
     constructor( g: Game ) {
 
@@ -20,10 +21,13 @@ class playscreen {
     }
 
     run(){
-        if (this.player.canrun == true) {
+        console.log(this.game.currentscreen);
+        
+        if (this.player.canrun == true && this.naardeshop == false) {
           console.log("run");
           if (this.game.score >= 50) {
               this.game.score -= 50
+              this.naardeshop = true
               this.naarDeShop()
           }  
         }       
@@ -35,6 +39,7 @@ class playscreen {
              console.log("ik ben dood");
              this.dragon.delete()
              this.player.delete()
+             this.player.nummerdelete()
              let eyes = new Eyes(450, 150, 1)
          }
          
@@ -42,6 +47,9 @@ class playscreen {
      }
 
     public naarDeShop(){
+        this.dragon.delete()
+        this.player.delete()
+        this.player.nummerdelete()
         this.game.shopscreen()  
     }
 
