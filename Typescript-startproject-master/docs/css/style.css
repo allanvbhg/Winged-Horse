@@ -87,7 +87,7 @@ logo{
     background-repeat: no-repeat;
 }
 /*jesse's css*/
-sign, bord, naam, start, startbackground {
+sign, bord, naam, start, startbackground, n1, n2, n3, n4, n5, n6, backdrak, player, dragon, eyes {
     position: absolute;
     display: block;
     margin:0px; padding:0px;
@@ -117,8 +117,61 @@ start {
     width: 162px; height: 45px;
     background-size: cover;
 }
+
 startbackground {
     background-image: url(../img/background.png);
     width:1440px; height: 900px;
     background-size: cover;
+}
+
+backdrak {
+    background-image: url(../img/backdrak.jpg);
+    width:1440px; height: 900px;
+    background-size: cover;
+}
+
+player {
+    background-image: url(../img/temmer.png);
+    width: 272px; height: 283px;
+    background-size: cover;
+}
+
+dragon {
+    background-image: url(../img/dragon.png);
+    width: 256px ; height: 256px ;
+}
+
+eyes {
+    background-image: url(../img/eyes.png);
+    width: 463px ; height: 529px;
+}
+
+n1 {
+    background-image: url(../img/1.png);
+    width: 512px ; height: 512px;  
+}
+
+n2 {
+    background-image: url(../img/2.png);
+    width: 512px ; height: 512px;  
+}
+
+n3 {
+    background-image: url(../img/3.png);
+    width: 512px ; height: 512px;  
+}
+
+n4 {
+    background-image: url(../img/4.png);
+    width: 512px ; height: 512px;  
+}
+
+n5 {
+    background-image: url(../img/5.png);
+    width: 512px ; height: 512px;  
+}
+
+n6 {
+    background-image: url(../img/6.png);
+    width: 512px ; height: 512px;  
 }
