@@ -4,11 +4,17 @@ class Shop {
     private health: HTMLElement
     private powerUp: HTMLElement 
     private nextGame: HTMLElement 
+    private message: HTMLElement 
     private game : Game
-   
+    private waardeHealth : number
+    private waardePower : number 
+    
     constructor( g: Game ) {
-
+    
         this.game = g 
+        //Prijzen van de scores
+        this.waardeHealth = 300
+        this.waardePower = 200
 
         //ACHTERGROND
         this.achtergrond = document.createElement("achtergrondShop")
@@ -16,13 +22,13 @@ class Shop {
 
         //HEALTH
         this.health = document.createElement("health")   
-        this.health.innerHTML = "HEALTH"     
+        this.health.innerHTML = "HEALTH (300)"     
         document.body.appendChild(this.health);
         this.health.addEventListener("click", () => this.kooptHealth());
 
         //POWER
         this.powerUp = document.createElement("powerUp")
-        this.powerUp.innerHTML = "POWER UP"     
+        this.powerUp.innerHTML = "POWER UP (200) "     
         document.body.appendChild(this.powerUp);
         this.powerUp.addEventListener("click", () => this.kooptPowerUp());
 
@@ -30,6 +36,12 @@ class Shop {
         this.nextGame = document.createElement("nextGame")
         document.body.appendChild(this.nextGame)
         this.nextGame.addEventListener("click", () => this.naarStart());
+
+        //MESSAGE
+        this.message = document.createElement("message")
+          
+        document.body.appendChild(this.message)
+
     }
     
     public naarStart(){
@@ -37,30 +49,42 @@ class Shop {
         this.game.playscreen()  
     }
 
-    public kooptHealth(){
+    public kooptHealth(){ 
+        if( this.game.health == 0 ){
 
-        if (this.game.health == 0 ) { 
-            this.game.health = this.game.health + 1  
-            this.game.score = this.game.score - 1 
-            this.updateScore(this.game.score)
-            let healthElement = document.getElementsByTagName("healthElement")[0];
-            healthElement.innerHTML = "+ Health"
-        } 
-        else {
-            console.log("kan je niet meer kopen, je hebt er al een")
+            if ( this.game.score - this.waardeHealth > 0 ) { 
+                this.game.health = this.game.health + 1  
+                this.game.score = this.game.score - this.waardeHealth
+                this.updateScore(this.game.score)
+                let healthElement = document.getElementsByTagName("healthElement")[0];
+                healthElement.innerHTML = "+ Health"
+            } 
+            else {
+                this.message.innerHTML = "Je hebt te weinig geld"  
+            }
+
+        }else{
+            this.message.innerHTML = "Je hebt al health"   
         }
     }
 
-    public kooptPowerUp(){
-        if (this.game.power == 0 ) { 
-            this.game.power = this.game.power + 1  
-            this.game.score = this.game.score - 1 
-            this.updateScore(this.game.score)
-            let powerElement = document.getElementsByTagName("powerElement")[0];
-            powerElement.innerHTML = "+ Power"
-        } 
-        else {
-            console.log("kan je niet meer kopen, je hebt er al een")
+    public kooptPowerUp(){ 
+        if( this.game.power == 0 ){
+
+            if (this.game.score - this.waardePower > 0) { 
+                this.game.power = this.game.power + 1  
+                this.game.score = this.game.score - this.waardePower
+                this.updateScore(this.game.score)
+                let powerElement = document.getElementsByTagName("powerElement")[0]
+                powerElement.innerHTML = "+ Power"  
+            } 
+            else {
+                this.message.innerHTML = "Je hebt te weinig geld"   
+            }
+
+        }else{
+            this.message.innerHTML = "Je hebt al health"
+           
         }
     }
 

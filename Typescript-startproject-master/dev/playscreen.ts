@@ -3,8 +3,9 @@
 class playscreen {
 
     private game : Game
-    private nextGame: HTMLElement 
+    private newGame: HTMLElement 
     player : Player
+    eindScore: number 
     dragon : Dragon
     naardeshop : boolean = false
    
@@ -15,9 +16,6 @@ class playscreen {
         document.body.appendChild(background)
         this.dragon = new Dragon(900 , 430, 2)
         this.player = new Player(150 , 400, 2, this, this.game)
-        /*this.nextGame = document.createElement("nextGame")
-        document.body.appendChild(this.nextGame)
-        this.nextGame.addEventListener("click", () => this.naarDeShop());*/
     }
 
     run(){
@@ -35,15 +33,26 @@ class playscreen {
  
      die(){
          if (this.player.die == false) {
-             this.player.canrun = false
-             console.log("ik ben dood");
-             this.dragon.delete()
-             this.player.delete()
-             this.player.nummerdelete()
-             let eyes = new Eyes(450, 150, 1)
+            this.player.canrun = false
+            console.log("ik ben dood");
+
+            this.eindScore = this.game.score;
+            console.log(this.eindScore);
+           
+            this.dragon.delete()
+            this.player.delete()
+            this.player.nummerdelete()
+
+            //game over afbeelding
+            let eyes = new Eyes(250, 150, 1)
+            
+            //new Game button
+            this.newGame = document.createElement("newGame")
+            document.body.appendChild(this.newGame)
+            this.newGame.innerHTML = "NEW GAME"
+            this.game.score = 0;
+            this.newGame.addEventListener("click", () => this.game.startScreen() );
          }
-         
-         
      }
 
     public naarDeShop(){

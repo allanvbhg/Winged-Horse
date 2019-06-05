@@ -55,7 +55,7 @@ var Eyes = (function () {
 }());
 var Game = (function () {
     function Game() {
-        this.score = 5;
+        this.score = 0;
         this.health = 0;
         this.power = 0;
         this.currentscreen = new StartScreen(this);
@@ -337,13 +337,21 @@ var playscreen = (function () {
         }
     };
     playscreen.prototype.die = function () {
+        var _this = this;
         if (this.player.die == false) {
             this.player.canrun = false;
             console.log("ik ben dood");
+            this.eindScore = this.game.score;
+            console.log(this.eindScore);
             this.dragon.delete();
             this.player.delete();
             this.player.nummerdelete();
-            var eyes = new Eyes(450, 150, 1);
+            var eyes = new Eyes(250, 150, 1);
+            this.newGame = document.createElement("newGame");
+            document.body.appendChild(this.newGame);
+            this.newGame.innerHTML = "NEW GAME";
+            this.game.score = 0;
+            this.newGame.addEventListener("click", function () { return _this.game.startScreen(); });
         }
     };
     playscreen.prototype.naarDeShop = function () {
@@ -360,19 +368,23 @@ var Shop = (function () {
     function Shop(g) {
         var _this = this;
         this.game = g;
+        this.waardeHealth = 300;
+        this.waardePower = 200;
         this.achtergrond = document.createElement("achtergrondShop");
         document.body.appendChild(this.achtergrond);
         this.health = document.createElement("health");
-        this.health.innerHTML = "HEALTH";
+        this.health.innerHTML = "HEALTH (300)";
         document.body.appendChild(this.health);
         this.health.addEventListener("click", function () { return _this.kooptHealth(); });
         this.powerUp = document.createElement("powerUp");
-        this.powerUp.innerHTML = "POWER UP";
+        this.powerUp.innerHTML = "POWER UP (200) ";
         document.body.appendChild(this.powerUp);
         this.powerUp.addEventListener("click", function () { return _this.kooptPowerUp(); });
         this.nextGame = document.createElement("nextGame");
         document.body.appendChild(this.nextGame);
         this.nextGame.addEventListener("click", function () { return _this.naarStart(); });
+        this.message = document.createElement("message");
+        document.body.appendChild(this.message);
     }
     Shop.prototype.naarStart = function () {
         console.log("start button werkt");
@@ -380,26 +392,36 @@ var Shop = (function () {
     };
     Shop.prototype.kooptHealth = function () {
         if (this.game.health == 0) {
-            this.game.health = this.game.health + 1;
-            this.game.score = this.game.score - 1;
-            this.updateScore(this.game.score);
-            var healthElement = document.getElementsByTagName("healthElement")[0];
-            healthElement.innerHTML = "+ Health";
+            if (this.game.score - this.waardeHealth > 0) {
+                this.game.health = this.game.health + 1;
+                this.game.score = this.game.score - this.waardeHealth;
+                this.updateScore(this.game.score);
+                var healthElement = document.getElementsByTagName("healthElement")[0];
+                healthElement.innerHTML = "+ Health";
+            }
+            else {
+                this.message.innerHTML = "Je hebt te weinig geld";
+            }
         }
         else {
-            console.log("kan je niet meer kopen, je hebt er al een");
+            this.message.innerHTML = "Je hebt al health";
         }
     };
     Shop.prototype.kooptPowerUp = function () {
         if (this.game.power == 0) {
-            this.game.power = this.game.power + 1;
-            this.game.score = this.game.score - 1;
-            this.updateScore(this.game.score);
-            var powerElement = document.getElementsByTagName("powerElement")[0];
-            powerElement.innerHTML = "+ Power";
+            if (this.game.score - this.waardePower > 0) {
+                this.game.power = this.game.power + 1;
+                this.game.score = this.game.score - this.waardePower;
+                this.updateScore(this.game.score);
+                var powerElement = document.getElementsByTagName("powerElement")[0];
+                powerElement.innerHTML = "+ Power";
+            }
+            else {
+                this.message.innerHTML = "Je hebt te weinig geld";
+            }
         }
         else {
-            console.log("kan je niet meer kopen, je hebt er al een");
+            this.message.innerHTML = "Je hebt al health";
         }
     };
     Shop.prototype.updateScore = function (nieuweScore) {
@@ -430,9 +452,6 @@ var StartScreen = (function () {
         this.game = g;
         var background = document.createElement("startbackground");
         document.body.appendChild(background);
-        var sign = new Sign(260, 150, 1, 0);
-        var name = new Tekst(430, 250, 1, "naam", g);
-        var sign2 = new Sign(365, 600, 0.5, 1);
         var start = new Tekst(625, 670, 1, "start", g);
     }
     return StartScreen;

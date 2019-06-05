@@ -15,7 +15,7 @@ class Game {
     constructor() {
 
         //startWaardes 
-        this.score = 5 
+        this.score = 0
         this.health = 0 
         this.power = 0 
 
