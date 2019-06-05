@@ -4,13 +4,10 @@ class StartScreen {
     private nextGame: HTMLElement 
     private logo: HTMLElement
    
-
-   
     constructor( g: Game ) {
 
         this.game = g
 
-        
         this.logo = document.createElement("logo")        
         document.body.appendChild(this.logo);
 
@@ -20,12 +17,9 @@ class StartScreen {
 
     }
 
-
     public naarDeGame(){
         this.game.playscreen()  
     }
-
-   
 
     public update(){
 

@@ -22,6 +22,8 @@ var Dragon = (function () {
 var Game = (function () {
     function Game() {
         this.score = 5;
+        this.health = 0;
+        this.power = 0;
         this.currentscreen = new StartScreen(this);
         this.gameLoop();
     }
@@ -38,11 +40,15 @@ var Game = (function () {
     Game.prototype.shopscreen = function () {
         document.body.innerHTML = "";
         this.scorenMaken();
+        this.healthMaken();
+        this.powerMaken();
         this.currentscreen = new Shop(this);
     };
     Game.prototype.playscreen = function () {
         document.body.innerHTML = "";
         this.scorenMaken();
+        this.healthMaken();
+        this.powerMaken();
         this.currentscreen = new playscreen(this);
     };
     Game.prototype.scorenMaken = function () {
@@ -50,6 +56,26 @@ var Game = (function () {
         document.body.appendChild(this.scoreElement);
         this.scoreElement.innerHTML = "SCORE: " + this.score;
         console.log("scoreLEement:" + this.score);
+    };
+    Game.prototype.healthMaken = function () {
+        this.healthElement = document.createElement("healthElement");
+        document.body.appendChild(this.healthElement);
+        if (this.health == 1) {
+            this.healthElement.innerHTML = " + health ";
+        }
+        else {
+            console.log("nog geen health");
+        }
+    };
+    Game.prototype.powerMaken = function () {
+        this.powerElement = document.createElement("powerElement");
+        document.body.appendChild(this.powerElement);
+        if (this.power == 1) {
+            this.powerElement.innerHTML = " + power ";
+        }
+        else {
+            console.log("nog geen power");
+        }
     };
     return Game;
 }());
@@ -73,31 +99,61 @@ var Shop = (function () {
     function Shop(g) {
         var _this = this;
         this.game = g;
-        this.titel = document.createElement("shopTitel");
-        document.body.appendChild(this.titel);
+        this.waardeHealth = 300;
+        this.waardePower = 200;
+        this.achtergrond = document.createElement("achtergrondShop");
+        document.body.appendChild(this.achtergrond);
         this.health = document.createElement("health");
+        this.health.innerHTML = "HEALTH (300)";
         document.body.appendChild(this.health);
         this.health.addEventListener("click", function () { return _this.kooptHealth(); });
         this.powerUp = document.createElement("powerUp");
+        this.powerUp.innerHTML = "POWER UP (200) ";
         document.body.appendChild(this.powerUp);
         this.powerUp.addEventListener("click", function () { return _this.kooptPowerUp(); });
         this.nextGame = document.createElement("nextGame");
         document.body.appendChild(this.nextGame);
         this.nextGame.addEventListener("click", function () { return _this.naarStart(); });
+        this.message = document.createElement("message");
+        document.body.appendChild(this.message);
     }
     Shop.prototype.naarStart = function () {
         console.log("start button werkt");
         this.game.playscreen();
     };
     Shop.prototype.kooptHealth = function () {
-        this.game.score = this.game.score - 1;
-        this.updateScore(this.game.score);
-        console.log("nieuwe score:" + this.game.score);
+        if (this.game.health == 0) {
+            if (this.game.score - this.waardeHealth > 0) {
+                this.game.health = this.game.health + 1;
+                this.game.score = this.game.score - this.waardeHealth;
+                this.updateScore(this.game.score);
+                var healthElement = document.getElementsByTagName("healthElement")[0];
+                healthElement.innerHTML = "+ Health";
+            }
+            else {
+                this.message.innerHTML = "Je hebt te weinig geld";
+            }
+        }
+        else {
+            this.message.innerHTML = "Je hebt al health";
+        }
     };
     Shop.prototype.kooptPowerUp = function () {
-        this.game.score = this.game.score - 1;
-        this.updateScore(this.game.score);
-        console.log("nieuwe score:" + this.game.score);
+        if (this.game.power == 0) {
+            if (this.game.score - this.waardePower > 0) {
+                this.game.power = this.game.power + 1;
+                this.game.score = this.game.score - this.waardePower;
+                this.updateScore(this.game.score);
+                var powerElement = document.getElementsByTagName("powerElement")[0];
+                powerElement.innerHTML = "+ Power";
+            }
+            else {
+                this.message.innerHTML = "Je hebt te weinig geld";
+            }
+        }
+        else {
+            this.message.innerHTML = "Je hebt al health";
+        }
     };
     Shop.prototype.updateScore = function (nieuweScore) {
         var scoreElement = document.getElementsByTagName("scoreElement")[0];
