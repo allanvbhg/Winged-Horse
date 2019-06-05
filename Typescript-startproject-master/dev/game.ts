@@ -8,6 +8,7 @@ class Game {
     public health : number
     private healthElement:HTMLElement
     //PowerUp
+    
     public power : number
     private powerElement:HTMLElement
     

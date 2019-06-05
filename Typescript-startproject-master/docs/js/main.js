@@ -1,23 +1,57 @@
 "use strict";
 var Dragon = (function () {
-    function Dragon() {
-        this.element = document.createElement("dragon");
-        var background = document.getElementsByTagName("background")[0];
-        background.appendChild(this.element);
-        this.posx = 250;
-        this.posy = 100;
+    function Dragon(x, y, scale) {
+        this.dragon = document.createElement("dragon");
+        document.body.appendChild(this.dragon);
+        this.dragon.id = "drake";
+        this.dragon.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+        console.log("dragon created");
+        this.x = x;
+        this.y = y;
+        this.scale = scale;
     }
-    Dragon.prototype.update = function () {
-        this.posx += 1;
-        this.element.style.transform = "translate(" + this.posx + "px, " + this.posy + "px)";
-        if (this.posx >= 400) {
-            this.posx--;
+    Dragon.prototype.moveChoice = function () {
+        console.log("move choise made");
+        var random = Math.floor(Math.random() * 10);
+        if (random > 5) {
+            console.log("attack");
+            this.x += 50;
+            this.dragon.style.transform = "translate(" + this.x + "px, " + this.y + "px) scale(" + this.scale + ")";
+            return "attack";
+        }
+        else {
+            console.log("tame");
+            this.x -= 50;
+            this.dragon.style.transform = "translate(" + this.x + "px, " + this.y + "px) scale(" + this.scale + ")";
+            return "tame";
         }
     };
-    Dragon.prototype.reset = function () {
-        console.log("dragon heeft positie 400 behaald ");
+    Dragon.prototype.onHit = function () {
+        console.log("AUW!!!!");
+        this.dragon.style.transform = "translate(" + this.x + "px, " + this.y + "px) scale(" + this.scale + ")";
+    };
+    Dragon.prototype.onTame = function (playscreen, g) {
+        this.playscreen = playscreen;
+        this.game = g;
+        this.game.score += 100;
+        this.playscreen.naarDeShop();
+        console.log("Ik ben getamed");
+    };
+    Dragon.prototype.delete = function () {
+        var elm = document.getElementById("drake");
+        if (elm != undefined) {
+            elm.remove();
+        }
     };
     return Dragon;
+}());
+var Eyes = (function () {
+    function Eyes(x, y, scale) {
+        this.eyes = document.createElement("eyes");
+        document.body.appendChild(this.eyes);
+        this.eyes.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+    }
+    return Eyes;
 }());
 var Game = (function () {
     function Game() {
@@ -80,14 +114,233 @@ var Game = (function () {
     return Game;
 }());
 window.addEventListener("load", function () { return new Game(); });
-var playscreen = (function () {
-    function playscreen(g) {
+var Tekst = (function () {
+    function Tekst(x, y, scale, type, g) {
         var _this = this;
         this.game = g;
-        this.nextGame = document.createElement("nextGame");
-        document.body.appendChild(this.nextGame);
-        this.nextGame.addEventListener("click", function () { return _this.naarDeShop(); });
+        if (type == "naam") {
+            this.tekst = document.createElement("naam");
+            document.body.appendChild(this.tekst);
+            this.tekst.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+        }
+        if (type == "start") {
+            this.tekst = document.createElement("start");
+            document.body.appendChild(this.tekst);
+            this.tekst.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            this.tekst.addEventListener("click", function () { return _this.start(); });
+        }
     }
+    Tekst.prototype.start = function () {
+        this.game.playscreen();
+        console.log("next scene");
+    };
+    return Tekst;
+}());
+var Nummers = (function () {
+    function Nummers(x, y, scale, type) {
+        this.nummer = document.createElement("n" + type);
+        document.body.appendChild(this.nummer);
+        this.nummer.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+        this.nummer.id = "n" + type;
+        console.log("nummercreated");
+    }
+    Nummers.prototype.delete = function () {
+        this.nummer.style.transform = 'translate(0px, 0px) scale (0)';
+    };
+    return Nummers;
+}());
+var Player = (function () {
+    function Player(x, y, scale, playscreen, g) {
+        var _this = this;
+        this.buttons = new Array(2);
+        this.check = false;
+        this.die = false;
+        this.canrun = true;
+        this.balls = false;
+        this.playscreen = playscreen;
+        this.game = g;
+        this.player = document.createElement("player");
+        document.body.appendChild(this.player);
+        this.player.id = "player";
+        this.player.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+        console.log("player created");
+        document.addEventListener('keydown', function (e) { return _this.keyboardInput(e, x, y, scale); });
+    }
+    Player.prototype.keyboardInput = function (event, x, y, scale) {
+        if (event.keyCode == 37) {
+            x -= 10;
+            this.player.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            this.playscreen.run();
+        }
+        else if (event.keyCode == 38) {
+            if (this.action == "attack" && this.die == false) {
+                this.check = false;
+                var one = this.buttons[0];
+                var two = this.buttons[1];
+                var three = this.buttons[2];
+                var nummer1 = new Nummers(300, -100, 0.2, one);
+                var nummer2 = new Nummers(402.4, -100, 0.2, two);
+                var nummer3 = new Nummers(504.8, -100, 0.2, three);
+                this.balls = true;
+                console.log(this.buttons);
+                y -= 10;
+                this.player.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+                this.AND = 0;
+            }
+            else {
+                if (this.die == false) {
+                    this.playscreen.die();
+                    this.nummerdelete();
+                    this.action = "test";
+                }
+            }
+        }
+        else if (event.keyCode == 39) {
+            if (this.check == false) {
+                x += 10;
+                this.player.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+                this.check = true;
+                console.log("move choise making");
+                this.action = this.playscreen.dragon.moveChoice();
+            }
+            if (this.action == "attack") {
+                var number = 0;
+                var arr = [1, 2, 3, 4, 5, 6];
+                var buttons = new Array(2);
+                while (buttons.length == 2) {
+                    var multi = arr.length;
+                    var random = Math.floor(Math.random() * multi);
+                    buttons[number] = arr[random];
+                    arr.splice(random, 1);
+                    number++;
+                }
+                this.buttons = buttons;
+            }
+        }
+        else if (event.keyCode == 40) {
+            if (this.action == "tame" && this.die == false) {
+                this.check = false;
+                this.playscreen.dragon.onTame(this.playscreen, this.game);
+                this.playscreen.naarDeShop();
+                y += 10;
+                this.player.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            }
+            else {
+                if (this.die == false) {
+                    this.playscreen.die();
+                    this.nummerdelete();
+                    this.action = "test";
+                }
+            }
+        }
+        else if (event.keyCode == 81) {
+            if (this.buttons[0] == 1 || this.buttons[1] == 1 || this.buttons[2] == 1) {
+                this.FAND();
+            }
+            else {
+                this.playscreen.die();
+                this.nummerdelete();
+            }
+        }
+        else if (event.keyCode == 87) {
+            if (this.buttons[0] == 2 || this.buttons[1] == 2 || this.buttons[2] == 2) {
+                this.FAND();
+            }
+            else {
+                this.playscreen.die();
+                this.nummerdelete();
+            }
+        }
+        else if (event.keyCode == 69) {
+            if (this.buttons[0] == 3 || this.buttons[1] == 3 || this.buttons[2] == 3) {
+                this.FAND();
+            }
+            else {
+                this.playscreen.die();
+                this.nummerdelete();
+            }
+        }
+        else if (event.keyCode == 65) {
+            if (this.buttons[0] == 4 || this.buttons[1] == 4 || this.buttons[2] == 4) {
+                this.FAND();
+            }
+            else {
+                this.playscreen.die();
+                this.nummerdelete();
+            }
+        }
+        else if (event.keyCode == 83) {
+            if (this.buttons[0] == 5 || this.buttons[1] == 5 || this.buttons[2] == 5) {
+                this.FAND();
+            }
+            else {
+                this.playscreen.die();
+                this.nummerdelete();
+            }
+        }
+        else if (event.keyCode == 68) {
+            if (this.buttons[0] == 6 || this.buttons[1] == 6 || this.buttons[2] == 6) {
+                this.FAND();
+            }
+            else {
+                this.playscreen.die();
+                this.nummerdelete();
+            }
+        }
+    };
+    Player.prototype.FAND = function () {
+        this.AND++;
+        if (this.AND == 3) {
+            this.playscreen.dragon.onHit();
+            this.nummerdelete();
+        }
+    };
+    Player.prototype.nummerdelete = function () {
+        for (var i = 0; i < 3; i++) {
+            if (this.balls == true) {
+                var elm = document.getElementById("n" + this.buttons[i]);
+                if (elm != undefined) {
+                    elm.remove();
+                }
+            }
+        }
+        this.balls = false;
+    };
+    Player.prototype.delete = function () {
+        var elm = document.getElementById("player");
+        if (elm != undefined) {
+            elm.remove();
+        }
+        this.die = true;
+    };
+    return Player;
+}());
+var playscreen = (function () {
+    function playscreen(g) {
+        this.game = g;
+        var background = document.createElement("backdrak");
+        document.body.appendChild(background);
+        this.dragon = new Dragon(900, 430, 2);
+        this.player = new Player(150, 400, 2, this, this.game);
+    }
+    playscreen.prototype.run = function () {
+        if (this.player.canrun == true) {
+            console.log("run");
+            if (this.game.score >= 50) {
+                this.game.score -= 50;
+                this.naarDeShop();
+            }
+        }
+    };
+    playscreen.prototype.die = function () {
+        if (this.player.die == false) {
+            this.player.canrun = false;
+            console.log("ik ben dood");
+            this.dragon.delete();
+            this.player.delete();
+            var eyes = new Eyes(450, 150, 1);
+        }
+    };
     playscreen.prototype.naarDeShop = function () {
         this.game.shopscreen();
     };
@@ -147,21 +400,33 @@ var Shop = (function () {
     };
     return Shop;
 }());
+var Sign = (function () {
+    function Sign(x, y, scale, type) {
+        if (type == 0) {
+            this.sign = document.createElement("sign");
+            document.body.appendChild(this.sign);
+            this.sign.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            console.log("signcreated");
+        }
+        else {
+            this.bord = document.createElement("bord");
+            document.body.appendChild(this.bord);
+            this.bord.style.transform = "translate(" + x + "px, " + y + "px) scale(" + scale + ")";
+            console.log("bordcreated");
+        }
+    }
+    return Sign;
+}());
 var StartScreen = (function () {
     function StartScreen(g) {
-        var _this = this;
         this.game = g;
-        this.logo = document.createElement("logo");
-        document.body.appendChild(this.logo);
-        this.nextGame = document.createElement("nextGame");
-        document.body.appendChild(this.nextGame);
-        this.nextGame.addEventListener("click", function () { return _this.naarDeGame(); });
+        var background = document.createElement("startbackground");
+        document.body.appendChild(background);
+        var sign = new Sign(260, 150, 1, 0);
+        var name = new Tekst(430, 250, 1, "naam", g);
+        var sign2 = new Sign(365, 600, 0.5, 1);
+        var start = new Tekst(625, 670, 1, "start", g);
     }
-    StartScreen.prototype.naarDeGame = function () {
-        this.game.playscreen();
-    };
-    StartScreen.prototype.update = function () {
-    };
     return StartScreen;
 }());
 //# sourceMappingURL=main.js.map
